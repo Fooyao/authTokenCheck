@@ -69,7 +69,13 @@ jobs:
       run: go mod verify
 
     - name: Run tests
-      run: go test -v ./...
+      run: |
+        # 检查是否有测试文件，如果没有则跳过
+        if find . -name "*_test.go" -print -quit | grep -q .; then
+          go test -v ./...
+        else
+          echo "No test files found, skipping tests"
+        fi
 
     - name: Build binary
       env:
@@ -79,22 +85,31 @@ jobs:
       run: |
         mkdir -p dist
         output_name="twitter-checker-${{ matrix.name }}${{ matrix.suffix }}"
+        echo "Building ${output_name}"
+        
         go build -ldflags="-s -w -X main.version=${{ github.ref_name }}" -o "dist/${output_name}" main.go
+        
+        # 验证文件是否创建
+        ls -la dist/
         
         # 创建压缩包
         cd dist
         if [ "${{ matrix.goos }}" = "windows" ]; then
           zip "${output_name%.exe}.zip" "${output_name}"
+          echo "Created: ${output_name%.exe}.zip"
         else
           tar -czf "${output_name}.tar.gz" "${output_name}"
+          echo "Created: ${output_name}.tar.gz"
         fi
+        
+        # 显示最终文件列表
+        ls -la
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: twitter-checker-${{ matrix.name }}
-        path: |
-          dist/twitter-checker-${{ matrix.name }}*
+        path: dist/
         retention-days: 5
 
   release:
@@ -115,8 +130,22 @@ jobs:
     - name: Prepare release files
       run: |
         mkdir -p release
-        find artifacts -name "*.zip" -o -name "*.tar.gz" | xargs -I {} cp {} release/
+        echo "Downloaded artifacts structure:"
+        find artifacts -type f -name "*.zip" -o -name "*.tar.gz" | head -10
+        
+        # 复制所有压缩包文件到release目录
+        find artifacts -type f \( -name "*.zip" -o -name "*.tar.gz" \) -exec cp {} release/ \;
+        
+        echo "Release files:"
         ls -la release/
+        
+        # 检查是否找到了文件
+        if [ ! "$(ls -A release/)" ]; then
+          echo "Error: No release files found!"
+          echo "Artifacts directory structure:"
+          find artifacts -type f
+          exit 1
+        fi
 
     - name: Generate checksums
       run: |
