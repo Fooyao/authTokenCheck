@@ -1,6 +1,6 @@
 # 🐦 Twitter账号状态批量检查工具
 
-[![Build Status](https://github.com/Fooyao/authTokenCheck/workflows/Build%20and%20Release/badge.svg)](https://github.com/username/authTokenCheck/actions)
+[![Build Status](https://github.com/Fooyao/authTokenCheck/workflows/Build%20and%20Release/badge.svg)](https://github.com/Fooyao/authTokenCheck/actions)
 [![Release](https://img.shields.io/github/release/Fooyao/authTokenCheck.svg)](https://github.com/Fooyao/authTokenCheck/releases)
 [![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue.svg)](https://golang.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
