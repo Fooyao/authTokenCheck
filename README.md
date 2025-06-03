@@ -1,84 +1,81 @@
-# Twitter 账号状态批量检查工具
+# 🐦 Twitter账号状态批量检查工具
 
-这是一个高效的 Twitter 账号状态批量检查工具，使用 Go 语言开发，支持并发处理、智能解析和增量检查。
+[![Build Status](https://github.com/Fooyao/authTokenCheck/workflows/Build%20and%20Release/badge.svg)](https://github.com/username/authTokenCheck/actions)
+[![Release](https://img.shields.io/github/release/Fooyao/authTokenCheck.svg)](https://github.com/Fooyao/authTokenCheck/releases)
+[![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue.svg)](https://golang.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+一个高性能的Twitter账号状态批量检查工具，使用Go语言开发，支持智能解析、并发处理和增量检查。
+
+**🚀 所有版本通过 GitHub Actions 自动编译，支持多平台，下载即用**
 
 ## 🚀 主要特性
 
-- **🔍 智能解析**: 自动识别 auth_token 和 ct0，支持任意顺序排列
-- **⚡ 高效并发**: 10个协程并发检查，大幅提升处理速度
-- **📊 状态分类**: 自动按账号状态分类输出到不同文件
-- **🔄 增量检查**: 自动跳过已检查的账号，支持断点续传
-- **🛡️ 容错处理**: 完善的错误处理机制，程序稳定可靠
+- **🔄 智能解析**: 自动识别 auth_token 和 ct0，支持多种格式排列
+- **⚡ 高性能并发**: 10个 goroutine 并发查询，大幅提升检查速度
+- **📈 增量检查**: 自动跳过已检查账号，支持断点续传
+- **🏷️ 状态分类**: 自动将不同状态账号分类保存到不同文件
 - **📝 格式灵活**: 支持多种输入格式，容错能力强
+- **🏗️ 自动构建**: 通过 GitHub Actions 自动编译多平台版本
 
-## 📦 编译和安装
+## 📦 快速开始
 
 ### 方法一：下载预编译版本（推荐）
 
-从 [GitHub Releases](https://github.com/your-username/twitter-checker/releases) 下载最新版本：
+**所有版本均由 GitHub Actions 自动编译，无需本地环境配置**
+
+1. 前往 [Releases 页面](../../releases)
+2. 下载对应平台的二进制文件：
+   - **Windows**: `twitter-checker-windows-amd64.exe` 或 `twitter-checker-windows-386.exe`
+   - **Linux**: `twitter-checker-linux-amd64` 或 `twitter-checker-linux-arm64`
+   - **macOS**: `twitter-checker-macos-amd64` 或 `twitter-checker-macos-arm64`
+3. **Linux/macOS 用户**：添加执行权限
+   ```bash
+   chmod +x twitter-checker-*
+   ```
+4. 直接运行：
+   ```bash
+   # Linux/macOS
+   ./twitter-checker-linux-amd64 accounts.txt
+   
+   # Windows
+   twitter-checker-windows-amd64.exe accounts.txt
+   ```
+
+### 方法二：本地编译（开发者）
+
+如果需要自定义编译或参与开发：
 
 ```bash
-# 1. 访问 Release 页面下载对应平台的压缩包
-# Windows: twitter-checker-windows-amd64.zip
-# Linux: twitter-checker-linux-amd64.tar.gz  
-# macOS: twitter-checker-macos-amd64.tar.gz
-
-# 2. 解压文件
-# Windows
-unzip twitter-checker-windows-amd64.zip
-
-# Linux/macOS
-tar -xzf twitter-checker-linux-amd64.tar.gz
-
-# 3. 运行程序
-./twitter-checker accounts.txt
-```
-
-### 方法二：从源码编译
-
-```bash
-# 1. 确保已安装 Go 1.19 或更高版本
+# 1. 确保已安装 Go 1.21 或更高版本
 go version
 
-# 2. 克隆或下载项目文件
-# 确保包含：main.go, go.mod, go.sum
+# 2. 克隆项目
+git clone <repository-url>
+cd authTokenCheck
 
 # 3. 安装依赖
 go mod tidy
 
 # 4. 直接运行
-go run main.go <账号文件>
-```
+go run main.go accounts.txt
 
-### 方法三：编译为可执行文件
-
-```bash
-# 编译为当前平台可执行文件
+# 5. 或编译为可执行文件
 go build -o twitter-checker main.go
-
-# 运行编译后的程序
-./twitter-checker <账号文件>
+./twitter-checker accounts.txt
 ```
 
-### 方法四：交叉编译
+### 方法三：多平台批量编译
+
+使用项目提供的编译脚本：
 
 ```bash
-# 编译为 Windows 64位
-GOOS=windows GOARCH=amd64 go build -o twitter-checker.exe main.go
-
-# 编译为 Linux 64位
-GOOS=linux GOARCH=amd64 go build -o twitter-checker-linux main.go
-
-# 编译为 macOS 64位
-GOOS=darwin GOARCH=amd64 go build -o twitter-checker-mac main.go
-```
-
-### 方法五：本地批量编译
-
-```bash
-# 使用提供的脚本编译所有平台
+# 编译所有平台版本
 chmod +x scripts/release.sh
 ./scripts/release.sh 1.0.0
+
+# 编译结果在 dist/ 目录
+ls -la dist/
 ```
 
 ## 📋 账号状态说明
@@ -107,10 +104,10 @@ chmod +x scripts/release.sh
 
 ```text
 # 标准格式：auth_token----ct0
-1234567890abcdef1234567890abcdef12345678----1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+1234567890abcdef1234567890abcdef12345678----1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 
 # 颠倒顺序：ct0----auth_token
-abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890----abcdef1234567890abcdef1234567890abcdef12
+abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890----abcdef1234567890abcdef1234567890abcdef12
 
 # 只有auth_token（ct0可选）
 fedcba0987654321fedcba0987654321fedcba09
@@ -119,7 +116,7 @@ fedcba0987654321fedcba0987654321fedcba09
 username----1111222233334444555566667777888899990000----email@domain.com----other_data
 
 # 复杂混合格式
-user_info----aaaa1111bbbb2222cccc3333dddd4444eeee5555----extra_data----ccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbb----more_info
+user_info----aaaa1111bbbb2222cccc3333dddd4444eeee5555----extra_data----ccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbb----more_info
 ```
 
 ### 智能解析规则
@@ -133,37 +130,34 @@ user_info----aaaa1111bbbb2222cccc3333dddd4444eeee5555----extra_data----ccccdddde
 
 ## 🔧 使用方法
 
-### 基本用法
+### 快速使用（预编译版本）
 
 ```bash
-# 使用 go run
-go run main.go accounts.txt
+# 1. 从 GitHub Releases 下载对应平台的文件
+# 2. 准备账号文件 accounts.txt
+# 3. 直接运行
 
-# 使用编译后的程序
-./twitter-checker accounts.txt
+# Linux/macOS 示例
+chmod +x twitter-checker-linux-amd64
+./twitter-checker-linux-amd64 accounts.txt
+
+# Windows 示例  
+twitter-checker-windows-amd64.exe accounts.txt
 ```
 
-### 帮助信息
+### 命令行选项
 
 ```bash
-go run main.go
+# 显示版本信息
+./twitter-checker --version
+
+# 显示帮助信息
+./twitter-checker
 ```
 
-输出：
+### 示例输出
 ```
-使用方法: go run main.go <accounts_file.txt>
-文件格式: 每行按----分割，至少包含auth_token
----------------------------------------------------
-good_accounts.txt， 正常账号
-bad_token_accounts.txt， 无效token
-suspended_accounts.txt， 封禁账号
-locked_accounts.txt， 锁定账号
-error_accounts.txt， 错误账号，请重命名后重新查询
-```
-
-## 📊 程序输出示例
-
-```
+Twitter 账号状态检查工具 v1.0.0
 正在从文件 accounts.txt 读取账号信息...
 发现 150 个已检查的账号，将跳过重复检查
 跳过了 50 个已经检查过的账号
@@ -296,3 +290,54 @@ A: 程序会覆盖同名文件，重要结果请及时备份
 2. 输入文件示例（脱敏）
 3. 运行环境信息
 4. 具体需求描述 
+
+## 🚀 自动化构建说明
+
+### GitHub Actions 工作流
+
+本项目采用 GitHub Actions 实现自动化构建和发布，具有以下特点：
+
+- **多平台支持**: 自动编译 Windows、Linux、macOS 三个平台的版本
+- **架构完整**: 支持 amd64、arm64、386 等多种架构
+- **版本管理**: 通过 Git tag 触发自动发布（格式：v1.0.0）
+- **质量保证**: 自动运行测试、依赖验证等检查步骤
+- **即时可用**: 编译完成后立即可下载使用，无需额外配置
+
+### 支持的平台
+
+| 平台 | 架构 | 文件名 |
+|------|------|--------|
+| Windows | amd64 | `twitter-checker-windows-amd64.exe` |
+| Windows | 386 | `twitter-checker-windows-386.exe` |
+| Linux | amd64 | `twitter-checker-linux-amd64` |
+| Linux | arm64 | `twitter-checker-linux-arm64` |
+| macOS | amd64 | `twitter-checker-macos-amd64` |
+| macOS | arm64 | `twitter-checker-macos-arm64` |
+
+### 发布流程
+
+1. 开发者推送代码并创建版本标签：`git tag v1.0.0 && git push origin v1.0.0`
+2. GitHub Actions 自动触发构建流程
+3. 自动编译所有平台版本
+4. 运行测试和质量检查
+5. 生成 SHA256 校验和
+6. 创建 GitHub Release 并上传所有文件
+7. 用户可立即下载使用
+
+### 优势
+
+- **零配置**: 用户无需安装 Go 环境或处理依赖
+- **多平台**: 一次构建，支持所有主流操作系统
+- **自动化**: 完全自动化的构建和发布流程
+- **可追溯**: 每个版本都有完整的构建日志和校验和
+- **持续集成**: 代码质量通过自动化测试保障
+
+## 📄 许可证
+
+MIT License - 详见 [LICENSE](LICENSE) 文件
+
+---
+
+**📧 问题反馈**: 如遇到问题请提交 [Issue](../../issues)  
+**⭐ 支持项目**: 如果觉得有用请给个星标  
+**🔧 贡献代码**: 欢迎提交 Pull Request 
