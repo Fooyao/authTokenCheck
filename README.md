@@ -13,7 +13,28 @@
 
 ## 📦 编译和安装
 
-### 方法一：直接运行（推荐）
+### 方法一：下载预编译版本（推荐）
+
+从 [GitHub Releases](https://github.com/your-username/twitter-checker/releases) 下载最新版本：
+
+```bash
+# 1. 访问 Release 页面下载对应平台的压缩包
+# Windows: twitter-checker-windows-amd64.zip
+# Linux: twitter-checker-linux-amd64.tar.gz  
+# macOS: twitter-checker-macos-amd64.tar.gz
+
+# 2. 解压文件
+# Windows
+unzip twitter-checker-windows-amd64.zip
+
+# Linux/macOS
+tar -xzf twitter-checker-linux-amd64.tar.gz
+
+# 3. 运行程序
+./twitter-checker accounts.txt
+```
+
+### 方法二：从源码编译
 
 ```bash
 # 1. 确保已安装 Go 1.19 或更高版本
@@ -29,7 +50,7 @@ go mod tidy
 go run main.go <账号文件>
 ```
 
-### 方法二：编译为可执行文件
+### 方法三：编译为可执行文件
 
 ```bash
 # 编译为当前平台可执行文件
@@ -39,7 +60,7 @@ go build -o twitter-checker main.go
 ./twitter-checker <账号文件>
 ```
 
-### 方法三：交叉编译
+### 方法四：交叉编译
 
 ```bash
 # 编译为 Windows 64位
@@ -50,6 +71,14 @@ GOOS=linux GOARCH=amd64 go build -o twitter-checker-linux main.go
 
 # 编译为 macOS 64位
 GOOS=darwin GOARCH=amd64 go build -o twitter-checker-mac main.go
+```
+
+### 方法五：本地批量编译
+
+```bash
+# 使用提供的脚本编译所有平台
+chmod +x scripts/release.sh
+./scripts/release.sh 1.0.0
 ```
 
 ## 📋 账号状态说明

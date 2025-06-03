@@ -53,22 +53,13 @@ do
         -o "dist/$output_name" \
         main.go
     
-    # 创建压缩包
-    cd dist
-    if [ $GOOS = "windows" ]; then
-        zip -q "${output_name%.exe}.zip" "$output_name"
-        echo "    ✅ 创建压缩包: ${output_name%.exe}.zip"
-    else
-        tar -czf "${output_name}.tar.gz" "$output_name"
-        echo "    ✅ 创建压缩包: ${output_name}.tar.gz"
-    fi
-    cd ..
+    echo "    ✅ 编译完成: $output_name"
 done
 
 echo ""
 echo "📊 生成校验和..."
 cd dist
-sha256sum *.zip *.tar.gz > checksums.txt 2>/dev/null || true
+sha256sum * > checksums.txt 2>/dev/null || shasum -a 256 * > checksums.txt
 cd ..
 
 echo ""

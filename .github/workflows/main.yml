@@ -85,25 +85,17 @@ jobs:
       run: |
         mkdir -p dist
         output_name="twitter-checker-${{ matrix.name }}${{ matrix.suffix }}"
-        echo "Building ${output_name}"
+        echo "Building ${output_name} for ${{ matrix.goos }}/${{ matrix.goarch }}"
         
         go build -ldflags="-s -w -X main.version=${{ github.ref_name }}" -o "dist/${output_name}" main.go
         
-        # 验证文件是否创建
-        ls -la dist/
-        
-        # 创建压缩包
-        cd dist
-        if [ "${{ matrix.goos }}" = "windows" ]; then
-          zip "${output_name%.exe}.zip" "${output_name}"
-          echo "Created: ${output_name%.exe}.zip"
-        else
-          tar -czf "${output_name}.tar.gz" "${output_name}"
-          echo "Created: ${output_name}.tar.gz"
+        if [ ! -f "dist/${output_name}" ]; then
+          echo "Error: Failed to create ${output_name}!"
+          exit 1
         fi
         
-        # 显示最终文件列表
-        ls -la
+        echo "Successfully built: ${output_name}"
+        ls -la dist/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
@@ -130,19 +122,19 @@ jobs:
     - name: Prepare release files
       run: |
         mkdir -p release
-        echo "Downloaded artifacts structure:"
-        find artifacts -type f -name "*.zip" -o -name "*.tar.gz" | head -10
+        echo "Downloaded artifacts:"
+        find artifacts -type f -name "twitter-checker-*"
         
-        # 复制所有压缩包文件到release目录
-        find artifacts -type f \( -name "*.zip" -o -name "*.tar.gz" \) -exec cp {} release/ \;
+        # 直接复制所有二进制文件到release目录
+        find artifacts -type f -name "twitter-checker-*" -exec cp {} release/ \;
         
         echo "Release files:"
         ls -la release/
         
-        # 检查是否找到了文件
-        if [ ! "$(ls -A release/)" ]; then
+        # 验证是否有文件
+        if [ -z "$(ls -A release/)" ]; then
           echo "Error: No release files found!"
-          echo "Artifacts directory structure:"
+          echo "Artifacts structure:"
           find artifacts -type f
           exit 1
         fi
@@ -151,6 +143,7 @@ jobs:
       run: |
         cd release
         sha256sum * > checksums.txt
+        echo "Generated checksums:"
         cat checksums.txt
 
     - name: Extract release notes
@@ -168,14 +161,15 @@ jobs:
           echo "" >> release_notes.txt
           echo "" >> release_notes.txt
           echo "## 下载说明" >> release_notes.txt
-          echo "- **Windows用户**: 下载 \`twitter-checker-windows-*.zip\`" >> release_notes.txt
-          echo "- **Linux用户**: 下载 \`twitter-checker-linux-*.tar.gz\`" >> release_notes.txt
-          echo "- **macOS用户**: 下载 \`twitter-checker-macos-*.tar.gz\`" >> release_notes.txt
+          echo "直接下载对应平台的二进制文件：" >> release_notes.txt
+          echo "- **Windows用户**: 下载 \`twitter-checker-windows-*.exe\`" >> release_notes.txt
+          echo "- **Linux用户**: 下载 \`twitter-checker-linux-*\` (无扩展名)" >> release_notes.txt
+          echo "- **macOS用户**: 下载 \`twitter-checker-macos-*\` (无扩展名)" >> release_notes.txt
           echo "" >> release_notes.txt
-          echo "## 安装方法" >> release_notes.txt
-          echo "1. 下载对应平台的压缩包" >> release_notes.txt
-          echo "2. 解压到任意目录" >> release_notes.txt
-          echo "3. 在终端/命令行中运行: \`./twitter-checker accounts.txt\`" >> release_notes.txt
+          echo "## 使用方法" >> release_notes.txt
+          echo "1. 下载对应平台的二进制文件" >> release_notes.txt
+          echo "2. **Linux/macOS**: 添加执行权限 \`chmod +x twitter-checker-*\`" >> release_notes.txt
+          echo "3. 运行: \`./twitter-checker-* accounts.txt\` (Linux/macOS) 或双击运行 (Windows)" >> release_notes.txt
           echo "" >> release_notes.txt
           echo "## 校验和" >> release_notes.txt
           echo "请使用 \`checksums.txt\` 文件验证下载文件的完整性。" >> release_notes.txt
