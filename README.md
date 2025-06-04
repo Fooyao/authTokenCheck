@@ -9,6 +9,30 @@
 
 **🚀 所有版本通过 GitHub Actions 自动编译，支持多平台，下载即用**
 
+## 🎯 推荐服务
+
+### 📱 账号采购
+> **买推特就到号多多** - 专业的社交媒体账号交易平台
+> 
+> 🔗 **[访问号多多 - https://hdd.cm](https://hdd.cm)**
+> 
+> 提供优质Twitter账号，配合本工具可快速验证账号状态，确保采购质量
+
+### 🔐 验证码识别
+> **验证码识别就到 @nocaptcha** - 专业的验证码识别服务
+> 
+> 🔗 **[注册使用 - nocaptcha](https://www.nocaptcha.io/register?c=dwBf1P)**
+> 
+> **支持解码器类型：**
+> - ✅ **Cloudflare (CF)** - cookie，turnstile模式
+> - ✅ **AWS WAF** - 亚马Waf
+> - ✅ **PerimeterX (PX)** - 无感，按压
+> - ✅ **Shape Security** - V1, V2
+> - ✅ **Vercel Protection** - Vercel盾
+> - ✅ **Kasada** - ct，cd
+> - ✅ **DataDome** - 无感，盾，滑块
+> - 🎯 **小众解码器一应俱全** - 覆盖99%验证码类型
+
 ## 🚀 主要特性
 
 - **🔄 智能解析**: 自动识别 auth_token 和 ct0，支持多种格式排列
@@ -104,10 +128,10 @@ ls -la dist/
 
 ```text
 # 标准格式：auth_token----ct0
-1234567890abcdef1234567890abcdef12345678----1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+1234567890abcdef1234567890abcdef12345678----1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 
 # 颠倒顺序：ct0----auth_token
-abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890----abcdef1234567890abcdef1234567890abcdef12
+abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890----abcdef1234567890abcdef1234567890abcdef12
 
 # 只有auth_token（ct0可选）
 fedcba0987654321fedcba0987654321fedcba09
@@ -116,7 +140,7 @@ fedcba0987654321fedcba0987654321fedcba09
 username----1111222233334444555566667777888899990000----email@domain.com----other_data
 
 # 复杂混合格式
-user_info----aaaa1111bbbb2222cccc3333dddd4444eeee5555----extra_data----ccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbb----more_info
+user_info----aaaa1111bbbb2222cccc3333dddd4444eeee5555----extra_data----ccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbbccccddddeeeeffffaaaabbbb----more_info
 ```
 
 ### 智能解析规则
